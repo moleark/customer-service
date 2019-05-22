@@ -1,16 +1,39 @@
 {
   "name": "customer-service",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "^4.3.1",
+    "classnames": "^2.2.6",
+    "fontawesome": "^5.6.3",
+    "gh-pages": "^2.0.1",
+    "jwt-decode": "^2.2.0",
+    "lodash": "^4.17.11",
+    "mobx": "^5.9.4",
+    "mobx-react": "^5.4.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
+    "react-loadable": "^5.5.0",
+    "react-scripts": "3.0.1",
+    "tonva": "^1.0.12"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.13",
+    "@types/node": "^12.0.2",
+    "@types/react": "^16.8.18",
+    "@types/react-dom": "^16.8.4",
+    "typescript": "^3.4.5",
+    "@types/classnames": "^2.2.7",
+    "@types/react-loadable": "^5.5.1",
+    "@types/lodash": "^4.14.130"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=7789 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
