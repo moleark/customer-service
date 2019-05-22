@@ -1,16 +1,23 @@
 {
   "files": {
-    "main.css": "./static/css/main.2cce8147.chunk.css",
-    "main.js": "./static/js/main.643ebfc4.chunk.js",
-    "main.js.map": "./static/js/main.643ebfc4.chunk.js.map",
-    "runtime~main.js": "./static/js/runtime~main.d653cc00.js",
-    "runtime~main.js.map": "./static/js/runtime~main.d653cc00.js.map",
-    "static/js/2.b41502e9.chunk.js": "./static/js/2.b41502e9.chunk.js",
-    "static/js/2.b41502e9.chunk.js.map": "./static/js/2.b41502e9.chunk.js.map",
+    "main.css": "./static/css/main.94ad8322.chunk.css",
+    "main.js": "./static/js/main.2d932bb8.chunk.js",
+    "main.js.map": "./static/js/main.2d932bb8.chunk.js.map",
+    "runtime~main.js": "./static/js/runtime~main.198dad91.js",
+    "runtime~main.js.map": "./static/js/runtime~main.198dad91.js.map",
+    "static/css/2.5066b473.chunk.css": "./static/css/2.5066b473.chunk.css",
+    "static/js/2.98aa5410.chunk.js": "./static/js/2.98aa5410.chunk.js",
+    "static/js/2.98aa5410.chunk.js.map": "./static/js/2.98aa5410.chunk.js.map",
+    "static/js/3.ff4f9787.chunk.js": "./static/js/3.ff4f9787.chunk.js",
+    "static/js/3.ff4f9787.chunk.js.map": "./static/js/3.ff4f9787.chunk.js.map",
+    "static/js/4.e896794b.chunk.js": "./static/js/4.e896794b.chunk.js",
+    "static/js/4.e896794b.chunk.js.map": "./static/js/4.e896794b.chunk.js.map",
     "index.html": "./index.html",
-    "precache-manifest.cfd66c1f2a9067dd54a349de02b8995a.js": "./precache-manifest.cfd66c1f2a9067dd54a349de02b8995a.js",
+    "precache-manifest.a7695156efd1443d575fa66f3174af83.js": "./precache-manifest.a7695156efd1443d575fa66f3174af83.js",
     "service-worker.js": "./service-worker.js",
-    "static/css/main.2cce8147.chunk.css.map": "./static/css/main.2cce8147.chunk.css.map",
-    "static/media/logo.svg": "./static/media/logo.5d5d9eef.svg"
+    "static/css/2.5066b473.chunk.css.map": "./static/css/2.5066b473.chunk.css.map",
+    "static/css/main.94ad8322.chunk.css.map": "./static/css/main.94ad8322.chunk.css.map",
+    "static/media/font-awesome.min.css": "./static/media/fontawesome-webfont.fee66e71.woff",
+    "static/media/logo.svg": "./static/media/logo.ee7cd8ed.svg"
   }
 }
