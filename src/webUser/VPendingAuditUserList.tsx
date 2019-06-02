@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CWebUser } from './CWebUser';
 import { observer } from 'mobx-react';
-import { VPage, Page, List } from 'tonva';
+import { VPage, Page, List, LMR, FA, tv } from 'tonva';
 
 export class VPendingAuditUserList extends VPage<CWebUser> {
 
@@ -13,18 +13,23 @@ export class VPendingAuditUserList extends VPage<CWebUser> {
         return <this.content />
     }
 
-    private renderPendingUser = (user: any) => {
-        let { id, name } = user;
-        return <div>
-            {id} {name}
-        </div>
+    private renderPendingUser = (item: any) => {
+        let { webUser } = item;
+        let right = <FA name="chevron-right" className="chevron-right"></FA>
+        return <LMR right={right} className="p-3">
+            {tv(webUser, (v) => <div className="mr-3"><strong>{v.firstName}</strong></div>)}
+        </LMR>
+    }
+
+    private onUserClick = async (user: any) => {
+        await this.controller.openPendingAuditUserDetail(user);
     }
 
     private content = observer(() => {
 
         let { pendingUsers } = this.controller;
-        return <Page header="待审核">
-            <List items={pendingUsers} item={{ render: this.renderPendingUser }} />
+        return <Page header="待审核客户">
+            <List items={pendingUsers} item={{ render: this.renderPendingUser, onClick: this.onUserClick }} />
         </Page>
     })
 }

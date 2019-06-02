@@ -3,6 +3,7 @@ import { CApp, CUq } from 'tonva';
 import { consts } from './consts';
 import { CWebUser } from 'webUser/CWebUser';
 import { CMe } from 'me/CMe';
+import { COrder } from 'order/COrder';
 
 export class CCustomerServiceApp extends CApp {
     topKey: any;
@@ -22,6 +23,7 @@ export class CCustomerServiceApp extends CApp {
 
     cWebUser: CWebUser;
     cMe: CMe;
+    cOrder: COrder;
 
     protected async internalStart() {
         this.cUqOrder = this.getCUq(consts.uqOrder);
@@ -34,6 +36,7 @@ export class CCustomerServiceApp extends CApp {
 
         this.cWebUser = new CWebUser(this, undefined);
         this.cMe = new CMe(this, undefined);
+        this.cOrder = new COrder(this, undefined);
 
         let salesRegionTuid = this.cUqCommon.tuid('salesregion');
         this.currentSalesRegion = await salesRegionTuid.load(1);
