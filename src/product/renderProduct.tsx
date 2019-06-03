@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { ProductImage } from 'tools/productimage';
 import { tv } from 'tonva';
+import { ProductImage } from 'tools/productImage';
 
 export function renderProduct(product: any, index: number) {
     let { brand, description, descriptionC, CAS, purity, molecularFomula, molecularWeight, origin, imageUrl } = product;

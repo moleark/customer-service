@@ -3,6 +3,7 @@ import { Controller, Query, Sheet } from 'tonva';
 import { CCustomerServiceApp } from 'CCustomerServiceApp';
 import { VPendingOrderList } from './VPendingOrderList';
 import { VOrderDetail } from './VOrderDetail';
+import { LoaderProductChemical } from 'product/productLoader';
 
 export class COrder extends Controller {
 
@@ -33,13 +34,11 @@ export class COrder extends Controller {
         let { data } = order;
         let { orderitems } = data;
         let orderItemsGrouped = orderItemGroupByProduct(orderitems);
-        /*
         let loaderProduct = new LoaderProductChemical(this.cApp);
         for (let i = 0; i < orderItemsGrouped.length; i++) {
             let productId = orderItemsGrouped[i].product.id;
             orderItemsGrouped[i].product = await loaderProduct.load(productId);
         }
-        */
         data.orderItems = orderItemsGrouped;
         this.openVPage(VOrderDetail, order);
     }

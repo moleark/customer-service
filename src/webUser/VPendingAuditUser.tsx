@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { VPage, Page, List, Form, Schema, UiSchema, UiInputItem, UiButton, Context, FA } from 'tonva';
+import { VPage, Page, Form, Schema, UiSchema, UiInputItem, UiButton, Context, FA } from 'tonva';
 import { CWebUser } from './CWebUser';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
+import { VPendingAuditUserRefuse } from './VPendingAuditUserRefuse';
 
 const schema: Schema = [
     { name: 'id', type: 'id', required: false },
@@ -61,8 +62,9 @@ export class VPendingAuditUser extends VPage<CWebUser> {
         this.displayTip = true;
     }
 
-    private auditPendingUserRefuse = async () => {
-        await this.controller.auditPendingUserRefuse(this.data.id);
+    private openAuditRefuse = async () => {
+        this.openVPage(VPendingAuditUserRefuse);
+        //await this.controller.auditPendingUserRefuse(this.data.id);
     }
 
     private page = observer((user: any) => {
@@ -94,7 +96,7 @@ export class VPendingAuditUser extends VPage<CWebUser> {
                 onClick={this.auditPendingUser}>审核通过</button>
             <button type="button"
                 className="btn btn-primary w-40 mx-3"
-                onClick={this.auditPendingUserRefuse}>审核不通过</button>
+                onClick={this.openAuditRefuse}>审核不通过</button>
         </div>
         return <Page header="待审核客户详情" footer={footer}>
             <div className="row bg-white p-3">
