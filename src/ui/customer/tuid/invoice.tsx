@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export const invoiceTypeUI = {
     content: (values: any) => {
-        let { id, description } = values;
+        let { description } = values;
         return <div className="flex-grow-1">
             {description}
         </div>

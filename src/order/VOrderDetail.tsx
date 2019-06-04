@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { VPage, Page, BoxId } from 'tonva';
+import { VPage, Page, BoxId, EasyDate } from 'tonva';
 import { COrder } from './COrder';
 import { tv } from 'tonva';
-import { List, LMR } from 'tonva';
+import { List } from 'tonva';
 import { renderProduct } from 'product';
 
 export class VOrderDetail extends VPage<COrder> {
@@ -14,7 +14,7 @@ export class VOrderDetail extends VPage<COrder> {
 
 
     private packsRow = (item: any, index: number) => {
-        let { pack, quantity, price, currency } = item;
+        let { pack, quantity, price } = item;
 
         return <div key={index} className="px-2 py-2 border-top">
             <div className="d-flex align-items-center">
@@ -44,10 +44,13 @@ export class VOrderDetail extends VPage<COrder> {
     private page = (order: any) => {
 
         let { brief, data } = order;
-        let { id, no, state, description, date } = brief;
+        let { no, date } = brief;
         let { orderItems, currency, shippingContact, invoiceContact, invoiceType, invoiceInfo, amount, webUser } = data;
         let header = <>订单详情: {no}</>
         return <Page header={header}>
+            <div className="bg-white row no-gutters p-3 my-1">
+                <div className="col-9">{tv(webUser)}</div>
+            </div>
             <List items={orderItems} item={{ render: this.renderOrderItem }} />
             <div className="bg-white row no-gutters p-3 my-1">
                 <div className="col-3 text-muted">收货地址:</div>
@@ -60,6 +63,10 @@ export class VOrderDetail extends VPage<COrder> {
             <div className="bg-white row no-gutters p-3 my-1">
                 <div className="col-3 text-muted">发票信息:</div>
                 <div className="col-9">{invoiceTemplate(invoiceType, invoiceInfo)}</div>
+            </div>
+            <div className="bg-white row no-gutters p-3 my-1">
+                <div className="col-3 text-muted">下单时间:</div>
+                <div className="col-9"><EasyDate date={date} /></div>
             </div>
             <div className="bg-white p-3 my-1 text-right">
                 <span className="text-danger font-weight-bold">总金额: {amount}{tv(currency)}</span>
@@ -76,11 +83,11 @@ function invoiceTemplate(invoiceType: BoxId, invoiceInfo: BoxId): JSX.Element {
 }
 
 function invoiceTypeUI(values: any) {
-    let { id, description } = values;
+    let { description } = values;
     return <>{description}</>;
 }
 
 function invoiceInfoUI(values: any) {
-    let { id, title, taxNo, address, telephone, bank, accountNo } = values;
+    let { title } = values;
     return <>{title}</>;
 }

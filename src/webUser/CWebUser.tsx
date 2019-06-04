@@ -50,30 +50,27 @@ export class CWebUser extends Controller {
     }
 
     async auditPendingUser(data: any) {
-        let ret: number = 0;
         let { id, customer: customerNo, teacher: teacherNo } = data;
-        if (customerNo) {
-            let customer = await this.getCustomerByNoQuery.obj({ customerNo: customerNo });
-            if (customer) {
-                if (teacherNo) {
-                    let teacher = await this.getCustomerByNoQuery.obj({ customerNo: teacherNo });
-                    if (teacher) {
-                        await this.auditPendingUserAction.submit({ id: id, customerId: customer.id, teacherId: teacher.id });
-                    } else {
-                        ret = 4;
-                    }
-                } else {
-                    await this.auditPendingUserAction.submit({ id: id, customerId: customer.id });
-                }
-                // 刷新列表
-                this.pendingUsers = await this.pendingAuditUserQuery.table(undefined);
-            } else {
-                ret = 2;
-            }
-        } else {
-            ret = 1;
+        if (!customerNo)
+            return 1;
+        let customer = await this.getCustomerByNoQuery.obj({ customerNo: customerNo });
+        if (!customer)
+            return 2;
+
+        let { id: customerId } = customer;
+        let teacherId;
+        if (teacherNo) {
+            let teacher = await this.getCustomerByNoQuery.obj({ customerNo: teacherNo });
+            if (!teacher)
+                return 4;
+            teacherId = teacher.id;
         }
-        return ret;
+
+        await this.auditPendingUserAction.submit({ id: id, customerId: customerId, teacherId: teacherId });
+        let { cOrder } = this.cApp;
+        await cOrder.auditPendingOrder(id);
+        // 刷新列表
+        this.pendingUsers = await this.pendingAuditUserQuery.table(undefined);
     }
 
     async auditPendingUserRefuse(webUserId: number) {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { VPage, Page, Form, Schema, UiSchema, UiInputItem, UiButton, Context, FA } from 'tonva';
+import { VPage, Page, Form, Schema, UiSchema, UiInputItem, UiButton, Context, FA, LMR } from 'tonva';
 import { CWebUser } from './CWebUser';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -70,7 +70,7 @@ export class VPendingAuditUser extends VPage<CWebUser> {
     private page = observer((user: any) => {
 
         let { webUserContact } = this.controller;
-        let { id, firstName, lastName, gender, salutation, organizationName, departmentName } = user;
+        let { id, firstName, salutation, organizationName, departmentName } = user;
 
         let contactInfoUi = <div className="col-12 text-danger">该用户未填写手机号、电话或Email信息</div>;
         if (webUserContact) {
@@ -90,27 +90,26 @@ export class VPendingAuditUser extends VPage<CWebUser> {
         }
 
         this.data.id = id;
-        let footer = <div className="justify-content-end">
-            <button type="button"
-                className="btn btn-primary w-40 mx-3"
-                onClick={this.auditPendingUser}>审核通过</button>
-            <button type="button"
-                className="btn btn-primary w-40 mx-3"
-                onClick={this.openAuditRefuse}>审核不通过</button>
-        </div>
+        let footer = <LMR
+            left={<button type="button"
+                className="btn btn-primary m-1"
+                onClick={this.auditPendingUser}>通过</button>}
+            right={
+                <button type="button"
+                    className="btn btn-outline-primary m-1"
+                    onClick={this.openAuditRefuse}>不通过</button>}
+        />
         return <Page header="待审核客户详情" footer={footer}>
-            <div className="row bg-white p-3">
-                <div className="col-12"><strong className="large">{firstName}</strong> <span className="small text-muted">{salutation}</span></div>
+            <div className="bg-white p-3 mt-1">
+                <strong className="large">{firstName}</strong> <span className="small text-muted">{salutation}</span>
+            </div>
+            <div className="row bg-white pb-3 pl-4 pr-3">
                 {contactInfoUi}
                 <div className="col-4 text-muted">单位:</div>
                 <div className="col-8">{organizationName}</div>
                 <div className="col-4 text-muted">部门:</div>
                 <div className="col-8">{departmentName}</div>
             </div>
-            <div className="bg-white p-3 mt-1">
-                未审核订单列表
-            </div>
-            {this.pendingOrderList}
             <div className="bg-white p-3 mt-1">
                 <div>审核</div>
                 {tips}
@@ -120,6 +119,10 @@ export class VPendingAuditUser extends VPage<CWebUser> {
                 formData={this.data}
                 className="bg-white px-3 pb-3"
                 onButtonClick={this.onFormButtonClick}></Form>
+            <div className="bg-white px-3 pt-3 mt-1">
+                未审核订单列表
+            </div>
+            {this.pendingOrderList}
         </Page>
     });
 }

@@ -6,7 +6,7 @@ export class VPendingOrderList extends View<COrder> {
 
     private renderOrder = (order: any, index: number) => {
         let { openOrderDetail } = this.controller;
-        let { id, no, date, discription, flow } = order;
+        let { id, no, date } = order;
         return <div className="m-3 justify-content-between cursor-pointer" onClick={() => openOrderDetail(id)}>
             <div><span className="small text-muted">订单编号: </span><strong>{no}</strong></div>
             <div className="small text-muted"><EasyDate date={date} /></div>

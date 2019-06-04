@@ -15,9 +15,9 @@ export class VPendingAuditUserList extends VPage<CWebUser> {
 
     private renderPendingUser = (item: any) => {
         let { webUser } = item;
-        let right = <FA name="chevron-right" className="chevron-right"></FA>
+        let right = <FA name="chevron-right" className="chevron-right align-self-center"></FA>
         return <LMR right={right} className="p-3">
-            {tv(webUser, (v) => <div className="mr-3"><strong>{v.firstName}</strong></div>)}
+            {tv(webUser)}
         </LMR>
     }
 

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Controller, Query, Sheet } from 'tonva';
 import { CCustomerServiceApp } from 'CCustomerServiceApp';
 import { VPendingOrderList } from './VPendingOrderList';
@@ -16,7 +15,7 @@ export class COrder extends Controller {
         this.cApp = cApp;
         let { cUqOrder } = cApp;
         this.orderSheet = cUqOrder.sheet('order');
-        this.pendingAuditOrdersQuery = cUqOrder.query('getPendingPayment');
+        this.pendingAuditOrdersQuery = cUqOrder.query('getPendingAuditOrders');
     }
 
     async internalStart(param: any) {
@@ -26,6 +25,15 @@ export class COrder extends Controller {
     async renderPendingOrder(webUserId: bigint) {
         let pendingAuditOrders = await this.pendingAuditOrdersQuery.table({ webUser: webUserId });
         return this.renderView(VPendingOrderList, pendingAuditOrders);
+    }
+
+    async auditPendingOrder(webUserId: bigint) {
+        let pendingAuditOrders = await this.pendingAuditOrdersQuery.table({ webUser: webUserId });
+        for (let i = 0; i < pendingAuditOrders.length; i++) {
+            let order = pendingAuditOrders[i];
+            let { id, flow, state } = order;
+            await this.orderSheet.action(id, flow, state, "Pass");
+        }
     }
 
     openOrderDetail = async (orderId: number) => {
