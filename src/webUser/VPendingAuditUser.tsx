@@ -27,6 +27,7 @@ export class VPendingAuditUser extends VPage<CWebUser> {
     private pendingOrderList: JSX.Element;
     @observable displayTip: boolean = false;
     private tip: string;
+
     async open(user?: any) {
         this.pendingOrderList = await this.controller.renderPendingOrders(user.id);
         this.openPage(this.page, user);
@@ -40,6 +41,7 @@ export class VPendingAuditUser extends VPage<CWebUser> {
     private onFormButtonClick = async (name: string, context: Context) => {
         let { data } = context.form;
         let { customer, teacher } = data;
+        // 为了在界面更新后仍显示填写的内容，需要将结果保存起来
         this.data.customer = customer;
         this.data.teacher = teacher;
         this.displayTip = false;

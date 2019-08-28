@@ -10,6 +10,7 @@ export class VPendingAuditUserList extends VPage<CWebUser> {
     }
 
     render(param?: any): JSX.Element {
+        this.controller.getPendingUsers();
         return <this.content />
     }
 

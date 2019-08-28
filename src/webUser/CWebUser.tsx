@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Controller, Query, Map, Tuid, Action } from 'tonva';
 import { CCustomerServiceApp } from 'CCustomerServiceApp';
 import { VPendingAuditUserList } from './VPendingAuditUserList';
@@ -32,14 +31,13 @@ export class CWebUser extends Controller {
     }
 
     protected async internalStart(param?: any) {
+    }
+
+    tab = () => this.renderView(VPendingAuditUserList);
+
+    async getPendingUsers() {
         this.pendingUsers = await this.pendingAuditUserQuery.table(undefined);
     }
-
-    private renderUserList = () => {
-        return this.renderView(VPendingAuditUserList);
-    }
-
-    tab = () => <this.renderUserList />
 
     async openPendingAuditUserDetail(user: any) {
         let { webUser: webUserBox } = user;
@@ -53,17 +51,17 @@ export class CWebUser extends Controller {
         let { id, customer: customerNo, teacher: teacherNo } = data;
         if (!customerNo)
             return 1;
-        let customer = await this.getCustomerByNoQuery.obj({ customerNo: customerNo });
-        if (!customer)
+        let customerBox = await this.getCustomerByNoQuery.obj({ customerNo: customerNo });
+        if (!customerBox)
             return 2;
 
-        let { id: customerId } = customer;
+        let { id: customerId } = customerBox.customer;
         let teacherId;
         if (teacherNo) {
-            let teacher = await this.getCustomerByNoQuery.obj({ customerNo: teacherNo });
-            if (!teacher)
+            let teacherBox = await this.getCustomerByNoQuery.obj({ customerNo: teacherNo });
+            if (!teacherBox)
                 return 4;
-            teacherId = teacher.id;
+            teacherId = teacherBox.customer.id;
         }
 
         await this.auditPendingUserAction.submit({ id: id, customerId: customerId, teacherId: teacherId });

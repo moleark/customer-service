@@ -45,7 +45,6 @@ export class CCustomerServiceApp extends CApp {
         this.currentLanguage = await languageTuid.load(197);
 
         this.topKey = nav.topKey();
-        await this.cWebUser.start();
         this.showMain();
     }
 
