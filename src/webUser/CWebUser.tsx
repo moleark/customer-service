@@ -1,34 +1,15 @@
-import { Controller, Query, Map, Tuid, Action } from 'tonva';
-import { CCustomerServiceApp } from 'CCustomerServiceApp';
 import { VPendingAuditUserList } from './VPendingAuditUserList';
 import { observable } from 'mobx';
 import { VPendingAuditUser } from './VPendingAuditUser';
+import { VPendingAuditUserRefuse } from './VPendingAuditUserRefuse';
+import { CUqBase } from 'CBase';
 
-export class CWebUser extends Controller {
-
-    private cApp: CCustomerServiceApp;
-    private webUserTuid: Tuid;
-    private webUserContactMap: Map;
-    private pendingAuditUserQuery: Query;
-    private auditPendingUserAction: Action;
-    private auditPendingUserRefuseAction: Action;
-
-    private getCustomerByNoQuery: Query;
+export class CWebUser extends CUqBase {
 
     @observable pendingUsers: any[];
-    webUserContact: any;
-    constructor(cApp: CCustomerServiceApp, res: any) {
-        super(res);
-        this.cApp = cApp;
 
-        let { cUqWebUser, cUqCustomer } = this.cApp;
-        this.webUserTuid = cUqWebUser.tuid('webUser');
-        this.webUserContactMap = cUqWebUser.map('webUserContact');
-        this.pendingAuditUserQuery = cUqWebUser.query('getpendingaudituser');
-        this.auditPendingUserAction = cUqWebUser.action('auditPendingUser');
-        this.auditPendingUserRefuseAction = cUqWebUser.action('auditPendingUserRefuse');
-        this.getCustomerByNoQuery = cUqCustomer.query('getCustomerByNo');
-    }
+    currentAuditingUser: any;
+    webUserContact: any;
 
     protected async internalStart(param?: any) {
     }
@@ -36,46 +17,68 @@ export class CWebUser extends Controller {
     tab = () => this.renderView(VPendingAuditUserList);
 
     async getPendingUsers() {
-        this.pendingUsers = await this.pendingAuditUserQuery.table(undefined);
+        this.pendingUsers = await this.uqs.webuser.PendingAuditWebUser.table(undefined);
     }
 
     async openPendingAuditUserDetail(user: any) {
         let { webUser: webUserBox } = user;
         let { id } = webUserBox;
-        let webUser = await this.webUserTuid.load(id);
-        this.webUserContact = await this.webUserContactMap.obj({ webUser: id });
-        this.openVPage(VPendingAuditUser, webUser);
+        this.currentAuditingUser = await this.uqs.webuser.WebUser.load(id);
+        this.webUserContact = await this.uqs.webuser.WebUserContact.obj({ webUser: id });
+        this.openVPage(VPendingAuditUser);
     }
 
+    /**
+     * 审核通过操作
+     * @param data ：包含审核通过之后的内部cid
+     */
     async auditPendingUser(data: any) {
         let { id, customer: customerNo, teacher: teacherNo } = data;
         if (!customerNo)
             return 1;
-        let customerBox = await this.getCustomerByNoQuery.obj({ customerNo: customerNo });
+        let customerBox = await this.uqs.customer.getCustomerByNo.obj({ customerNo: customerNo });
         if (!customerBox)
             return 2;
 
         let { id: customerId } = customerBox.customer;
         let teacherId;
         if (teacherNo) {
-            let teacherBox = await this.getCustomerByNoQuery.obj({ customerNo: teacherNo });
+            let teacherBox = await this.uqs.customer.getCustomerByNo.obj({ customerNo: teacherNo });
             if (!teacherBox)
                 return 4;
             teacherId = teacherBox.customer.id;
         }
 
-        await this.auditPendingUserAction.submit({ id: id, customerId: customerId, teacherId: teacherId });
+        await this.uqs.webuser.auditPendingUser.submit({ id: id, customerId: customerId });
         let { cOrder } = this.cApp;
         await cOrder.auditPendingOrder(id);
         // 刷新列表
-        this.pendingUsers = await this.pendingAuditUserQuery.table(undefined);
+        this.pendingUsers = await this.uqs.webuser.PendingAuditWebUser.table(undefined);
     }
 
-    async auditPendingUserRefuse(webUserId: number) {
-        await this.auditPendingUserRefuseAction.submit({ id: webUserId });
-        this.pendingUsers = await this.pendingAuditUserQuery.table(undefined);
+    /**
+     * 打开审核不通过界面
+     */
+    openAuditRefuse = async () => {
+
+        let reasons = await this.uqs.webuser.AuditPendingUserRefuseReason.search(undefined, 0, 100);
+        this.openVPage(VPendingAuditUserRefuse, reasons);
+        //await this.controller.auditPendingUserRefuse(this.data.id);
     }
 
+    /**
+     * 审核不通过操作
+     * @param webUserId
+     */
+    async auditPendingUserRefuse(reasonData: any) {
+        let { reason, comments } = reasonData;
+        await this.uqs.webuser.auditPendingUserRefuse.submit({ id: this.currentAuditingUser.id, reason: reason, comments: comments });
+        this.pendingUsers = await this.uqs.webuser.PendingAuditWebUser.table(undefined);
+    }
+
+    /**
+     * 显示待审核客户的未审核订单
+     */
     renderPendingOrders = async (webUserId: bigint) => {
         let { cOrder } = this.cApp;
         return await cOrder.renderPendingOrder(webUserId);

@@ -14,6 +14,6 @@ export class VPendingOrderList extends View<COrder> {
     }
 
     render(pendingOrders?: any): JSX.Element {
-        return <List items={pendingOrders} item={{ render: this.renderOrder }}></List>;
+        return <List items={pendingOrders} item={{ render: this.renderOrder }} none='无未审核订单'></List>;
     }
 }

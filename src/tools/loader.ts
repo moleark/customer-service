@@ -2,16 +2,12 @@ import { Entity } from 'tonva';
 import { CCustomerServiceApp } from 'CCustomerServiceApp';
 
 export abstract class Loader<T> {
-    protected aaa = 'bbbaa';
     protected cApp: CCustomerServiceApp;
     private entities: Entity[] = [];
     private schemaLoaded: boolean = false;
     constructor(cApp: CCustomerServiceApp) {
         this.cApp = cApp;
-        this.initEntities();
     }
-
-    protected abstract initEntities(): void;
 
     protected async loadSchemas() {
         if (this.schemaLoaded === true) return;

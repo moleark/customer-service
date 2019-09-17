@@ -1,44 +1,32 @@
-import { Controller, Query, Sheet } from 'tonva';
-import { CCustomerServiceApp } from 'CCustomerServiceApp';
 import { VPendingOrderList } from './VPendingOrderList';
 import { VOrderDetail } from './VOrderDetail';
 import { LoaderProductChemical } from 'product/productLoader';
+import { CUqBase } from 'CBase';
+import { BoxId } from 'tonva';
 
-export class COrder extends Controller {
-
-    private cApp: CCustomerServiceApp;
-    private pendingAuditOrdersQuery: Query;
-    private orderSheet: Sheet;
-    constructor(cApp: CCustomerServiceApp, res: any) {
-        super(res);
-
-        this.cApp = cApp;
-        let { cUqOrder } = cApp;
-        this.orderSheet = cUqOrder.sheet('order');
-        this.pendingAuditOrdersQuery = cUqOrder.query('getPendingAuditOrders');
-    }
+export class COrder extends CUqBase {
 
     async internalStart(param: any) {
 
     }
 
     async renderPendingOrder(webUserId: bigint) {
-        let pendingAuditOrders = await this.pendingAuditOrdersQuery.table({ webUser: webUserId });
+        let pendingAuditOrders = await this.uqs.order.GetPendingAuditOrders.table({ webUser: webUserId });
         return this.renderView(VPendingOrderList, pendingAuditOrders);
     }
 
     async auditPendingOrder(webUserId: bigint) {
-        let pendingAuditOrders = await this.pendingAuditOrdersQuery.table({ webUser: webUserId });
+        let pendingAuditOrders = await this.uqs.order.GetPendingAuditOrders.table({ webUser: webUserId });
         for (let i = 0; i < pendingAuditOrders.length; i++) {
             let order = pendingAuditOrders[i];
             let { id, flow, state } = order;
-            await this.orderSheet.action(id, flow, state, "Pass");
+            await this.uqs.order.Order.action(id, flow, state, "Pass");
         }
     }
 
     openOrderDetail = async (orderId: number) => {
 
-        let order = await this.orderSheet.getSheet(orderId);
+        let order = await this.uqs.order.Order.getSheet(orderId);
         let { data } = order;
         let { orderitems } = data;
         let orderItemsGrouped = orderItemGroupByProduct(orderitems);
@@ -49,6 +37,11 @@ export class COrder extends Controller {
         }
         data.orderItems = orderItemsGrouped;
         this.openVPage(VOrderDetail, order);
+    }
+
+    renderOrderItemProduct = (product: BoxId) => {
+        let { cProduct } = this.cApp;
+        return cProduct.renderCartProduct(product);
     }
 }
 

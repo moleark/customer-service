@@ -3,7 +3,6 @@ import { VPage, Page, Form, Schema, UiSchema, UiInputItem, UiButton, Context, FA
 import { CWebUser } from './CWebUser';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { VPendingAuditUserRefuse } from './VPendingAuditUserRefuse';
 
 const schema: Schema = [
     { name: 'id', type: 'id', required: false },
@@ -11,11 +10,20 @@ const schema: Schema = [
     { name: 'teacher', type: 'string', required: false },
     { name: 'submit', type: 'submit' },
 ];
+
 const uiSchema: UiSchema = {
     items: {
         id: { visible: false },
-        customer: { widget: 'text', label: '客户CID', placeholder: '客户CID' } as UiInputItem,
-        teacher: { widget: 'text', label: '老师CID', placeholder: '老师CID' } as UiInputItem,
+        customer: {
+            widget: 'text', label: '客户CID', placeholder: '客户CID', rules: (value) => {
+                return value && value.length > 30 ? 'CID过长，请检查后输入。' : undefined;
+            }
+        } as UiInputItem,
+        teacher: {
+            widget: 'text', label: '老师CID', placeholder: '老师CID', rules: (value) => {
+                return value && value.length > 30 ? 'CID过长，请检查后输入。' : undefined;
+            }
+        } as UiInputItem,
         submit: { widget: 'button', label: '审核通过', visible: false, className: "btn btn-primary" } as UiButton,
     }
 }
@@ -28,9 +36,10 @@ export class VPendingAuditUser extends VPage<CWebUser> {
     @observable displayTip: boolean = false;
     private tip: string;
 
-    async open(user?: any) {
-        this.pendingOrderList = await this.controller.renderPendingOrders(user.id);
-        this.openPage(this.page, user);
+    async open(param?: any) {
+        let { currentAuditingUser } = this.controller;
+        this.pendingOrderList = await this.controller.renderPendingOrders(currentAuditingUser.id);
+        this.openPage(this.page, param);
     }
 
     private auditPendingUser = async () => {
@@ -64,15 +73,10 @@ export class VPendingAuditUser extends VPage<CWebUser> {
         this.displayTip = true;
     }
 
-    private openAuditRefuse = async () => {
-        this.openVPage(VPendingAuditUserRefuse);
-        //await this.controller.auditPendingUserRefuse(this.data.id);
-    }
+    private page = observer(() => {
 
-    private page = observer((user: any) => {
-
-        let { webUserContact } = this.controller;
-        let { id, firstName, salutation, organizationName, departmentName } = user;
+        let { currentAuditingUser, webUserContact, openAuditRefuse } = this.controller;
+        let { id, firstName, salutation, organizationName, departmentName } = currentAuditingUser;
 
         let contactInfoUi = <div className="col-12 text-danger">该用户未填写手机号、电话或Email信息</div>;
         if (webUserContact) {
@@ -93,13 +97,13 @@ export class VPendingAuditUser extends VPage<CWebUser> {
 
         this.data.id = id;
         let footer = <LMR
-            left={<button type="button"
+            right={<button type="button"
                 className="btn btn-primary m-1"
                 onClick={this.auditPendingUser}>通过</button>}
-            right={
+            left={
                 <button type="button"
                     className="btn btn-outline-primary m-1"
-                    onClick={this.openAuditRefuse}>不通过</button>}
+                    onClick={openAuditRefuse}>不通过</button>}
         />
         return <Page header="待审核客户详情" footer={footer}>
             <div className="bg-white p-3 mt-1">

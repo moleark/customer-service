@@ -1,15 +1,8 @@
 import * as React from 'react';
-import { Controller } from 'tonva';
-import { CCustomerServiceApp } from 'CCustomerServiceApp';
 import { VMe } from './VMe';
+import { CUqBase } from 'CBase';
 
-export class CMe extends Controller {
-
-    private cApp: CCustomerServiceApp;
-    constructor(cApp: CCustomerServiceApp, res: any) {
-        super(res);
-        this.cApp = cApp;
-    }
+export class CMe extends CUqBase {
 
     async internalStart(param?: any) {
 

@@ -1,54 +1,41 @@
-import { nav } from 'tonva';
-import { CApp, CUq } from 'tonva';
-import { consts } from './consts';
+import { nav, CAppBase, IConstructor } from 'tonva';
 import { CWebUser } from 'webUser/CWebUser';
 import { CMe } from 'me/CMe';
 import { COrder } from 'order/COrder';
+import { UQs } from 'uqs';
+import { VMain } from 'VMain';
+import { CUqBase } from 'CBase';
 
-export class CCustomerServiceApp extends CApp {
+export class CCustomerServiceApp extends CAppBase {
+    readonly uqs: UQs;
     topKey: any;
 
     currentSalesRegion: any;
     currentLanguage: any;
 
-    cUqOrder: CUq;
-    cUqProduct: CUq;
-    cUqCommon: CUq;
-    cUqWebUser: CUq;
-    cUqCustomer: CUq;
-    cUqCustomerDiscount: CUq;
-    cUqPromotion: CUq;
-    cUqWarehouse: CUq;
-    cUqMember: CUq;
-
     cWebUser: CWebUser;
     cMe: CMe;
     cOrder: COrder;
 
+    protected newC<T extends CUqBase>(type: IConstructor<T>): T {
+        return new type(this);
+    }
+
     protected async internalStart() {
-        this.cUqOrder = this.getCUq(consts.uqOrder);
-        this.cUqProduct = this.getCUq(consts.uqProduct);
-        this.cUqCommon = this.getCUq(consts.uqCommon);
-        this.cUqWebUser = this.getCUq(consts.uqWebUser);
-        this.cUqCustomer = this.getCUq(consts.uqCustomer);
-        this.cUqCustomerDiscount = this.getCUq(consts.uqCustomerDiscount);
-        this.cUqPromotion = this.getCUq(consts.uqPromotion);
 
-        this.cWebUser = new CWebUser(this, undefined);
-        this.cMe = new CMe(this, undefined);
-        this.cOrder = new COrder(this, undefined);
+        this.currentSalesRegion = await this.uqs.common.SalesRegion.load(1);
 
-        let salesRegionTuid = this.cUqCommon.tuid('salesregion');
-        this.currentSalesRegion = await salesRegionTuid.load(1);
+        this.currentLanguage = await this.uqs.common.Language.load(197);
 
-        let languageTuid = this.cUqCommon.tuid('language');
-        this.currentLanguage = await languageTuid.load(197);
+        this.cWebUser = this.newC(CWebUser);
+        this.cMe = this.newC(CMe);
+        this.cOrder = this.newC(COrder);
 
         this.topKey = nav.topKey();
         this.showMain();
     }
 
     showMain(initTabName?: string) {
-        this.openVPage(this.VAppMain, initTabName);
+        this.openVPage(VMain, initTabName);
     }
 }
