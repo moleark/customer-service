@@ -7,10 +7,8 @@ import { List } from 'tonva';
 export class VOrderDetail extends VPage<COrder> {
 
     async open(order: any) {
-
         this.openPage(this.page, order);
     }
-
 
     private packsRow = (item: any, index: number) => {
         let { pack, quantity, price } = item;

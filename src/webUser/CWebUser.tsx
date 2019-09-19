@@ -12,14 +12,14 @@ export class CWebUser extends CUqBase {
     webUserContact: any;
 
     protected async internalStart() {
-        this.pendingUsers = await this.uqs.webuser.getPendingAuditUser.table(undefined);
+        // this.pendingUsers = await this.uqs.webuser.getPendingAuditUser.table(undefined);
     }
 
     tab = () => this.renderView(VPendingAuditUserList);
 
-    //async getPendingUsers() {
-    //this.pendingUsers = await this.uqs.webuser.PendingAuditWebUser.table(undefined);
-    //}
+    async getPendingUsers() {
+        this.pendingUsers = await this.uqs.webuser.getPendingAuditUser.table(undefined);
+    }
 
     async openPendingAuditUserDetail(user: any) {
         let { webUser: webUserBox } = user;

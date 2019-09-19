@@ -1,13 +1,11 @@
 import { VPendingOrderList } from './VPendingOrderList';
 import { VOrderDetail } from './VOrderDetail';
-import { LoaderProductChemical } from 'product/productLoader';
 import { CUqBase } from 'CBase';
 import { BoxId } from 'tonva';
 
 export class COrder extends CUqBase {
 
     async internalStart(param: any) {
-
     }
 
     async renderPendingOrder(webUserId: bigint) {
@@ -30,11 +28,6 @@ export class COrder extends CUqBase {
         let { data } = order;
         let { orderitems } = data;
         let orderItemsGrouped = orderItemGroupByProduct(orderitems);
-        let loaderProduct = new LoaderProductChemical(this.cApp);
-        for (let i = 0; i < orderItemsGrouped.length; i++) {
-            let productId = orderItemsGrouped[i].product.id;
-            orderItemsGrouped[i].product = await loaderProduct.load(productId);
-        }
         data.orderItems = orderItemsGrouped;
         this.openVPage(VOrderDetail, order);
     }

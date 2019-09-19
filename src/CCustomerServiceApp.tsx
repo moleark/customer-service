@@ -5,9 +5,10 @@ import { COrder } from 'order/COrder';
 import { UQs } from 'uqs';
 import { VMain } from 'VMain';
 import { CUqBase } from 'CBase';
+import { CProduct } from 'product/CProduct';
 
 export class CCustomerServiceApp extends CAppBase {
-    get uqs(): UQs {return this._uqs as UQs;}
+    get uqs(): UQs { return this._uqs as UQs; }
 
     topKey: any;
 
@@ -15,6 +16,7 @@ export class CCustomerServiceApp extends CAppBase {
     currentLanguage: any;
 
     cWebUser: CWebUser;
+    cProduct: CProduct;
     cMe: CMe;
     cOrder: COrder;
 
@@ -29,7 +31,7 @@ export class CCustomerServiceApp extends CAppBase {
         this.currentLanguage = await this.uqs.common.Language.load(197);
 
         this.cWebUser = this.newC(CWebUser);
-        this.cWebUser.start();
+        this.cProduct = this.newC(CProduct);
         this.cMe = this.newC(CMe);
         this.cOrder = this.newC(COrder);
 
