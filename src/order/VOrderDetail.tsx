@@ -13,7 +13,7 @@ export class VOrderDetail extends VPage<COrder> {
 
 
     private packsRow = (item: any, index: number) => {
-        let { pack, quantity, price, currency } = item;
+        let { pack, quantity, price } = item;
 
         return <div key={index} className="px-2 py-2 border-top">
             <div className="d-flex align-items-center">
@@ -44,7 +44,7 @@ export class VOrderDetail extends VPage<COrder> {
     private page = (order: any) => {
 
         let { brief, data } = order;
-        let { id, no, state, description, date } = brief;
+        let { no } = brief;
         let { orderItems, currency, shippingContact, invoiceContact, invoiceType, invoiceInfo, amount, couponOffsetAmount, couponRemitted
             , freightFee, freightFeeRemitted } = data;
         let couponUI;
@@ -118,11 +118,11 @@ function invoiceTemplate(invoiceType: BoxId, invoiceInfo: BoxId): JSX.Element {
 }
 
 function invoiceTypeUI(values: any) {
-    let { id, description } = values;
+    let { description } = values;
     return <>{description}</>;
 }
 
 function invoiceInfoUI(values: any) {
-    let { id, title, taxNo, address, telephone, bank, accountNo } = values;
+    let { title } = values;
     return <>{title}</>;
 }

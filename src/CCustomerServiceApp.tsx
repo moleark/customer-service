@@ -7,7 +7,8 @@ import { VMain } from 'VMain';
 import { CUqBase } from 'CBase';
 
 export class CCustomerServiceApp extends CAppBase {
-    readonly uqs: UQs;
+    get uqs(): UQs {return this._uqs as UQs;}
+
     topKey: any;
 
     currentSalesRegion: any;
@@ -28,6 +29,7 @@ export class CCustomerServiceApp extends CAppBase {
         this.currentLanguage = await this.uqs.common.Language.load(197);
 
         this.cWebUser = this.newC(CWebUser);
+        this.cWebUser.start();
         this.cMe = this.newC(CMe);
         this.cOrder = this.newC(COrder);
 

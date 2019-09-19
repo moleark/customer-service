@@ -2,10 +2,10 @@ import { CSub, CBase } from "tonva";
 import { UQs } from "./uqs";
 
 export abstract class CUqBase extends CBase {
-    protected readonly uqs: UQs;
+    protected get uqs(): UQs {return this._uqs as UQs}
 }
 
 export abstract class CUqSub extends CSub {
-    protected readonly uqs: UQs;
+    protected get uqs(): UQs {return this._uqs as UQs}
     protected readonly owner: CUqBase;
 }

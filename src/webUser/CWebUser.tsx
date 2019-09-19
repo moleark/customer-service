@@ -11,14 +11,15 @@ export class CWebUser extends CUqBase {
     currentAuditingUser: any;
     webUserContact: any;
 
-    protected async internalStart(param?: any) {
+    protected async internalStart() {
+        this.pendingUsers = await this.uqs.webuser.PendingAuditWebUser.table(undefined);
     }
 
     tab = () => this.renderView(VPendingAuditUserList);
 
-    async getPendingUsers() {
-        this.pendingUsers = await this.uqs.webuser.PendingAuditWebUser.table(undefined);
-    }
+    //async getPendingUsers() {
+        //this.pendingUsers = await this.uqs.webuser.PendingAuditWebUser.table(undefined);
+    //}
 
     async openPendingAuditUserDetail(user: any) {
         let { webUser: webUserBox } = user;
@@ -41,6 +42,7 @@ export class CWebUser extends CUqBase {
             return 2;
 
         let { id: customerId } = customerBox.customer;
+        /*eslint no-unused-vars: 0*/
         let teacherId;
         if (teacherNo) {
             let teacherBox = await this.uqs.customer.getCustomerByNo.obj({ customerNo: teacherNo });

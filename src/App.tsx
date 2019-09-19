@@ -1,20 +1,46 @@
-import * as React from 'react';
+import React from 'react';
+//import logo from './logo.svg';
 import './App.css';
-import { NavView, nav, start } from 'tonva';
+import { NavView, AppConfig, start, nav } from 'tonva';
 import { CCustomerServiceApp } from 'CCustomerServiceApp';
-import { appConfig } from 'configuration';
+import { tvs } from 'tvs';
 
-//const tonvaApp = "bruce/TestApp";
+const appConfig: AppConfig = {
+    appName: "百灵威系统工程部/customer-service",
+    version: "1.0.3",                   // 版本变化，缓存的uqs才会重载
+    tvs: tvs,
+};
+
 nav.setSettings(appConfig);
 
-class App extends React.Component {
+const App: React.FC = () => {
 
-    private onLogined = async () => {
-        await start(CCustomerServiceApp, appConfig);
-    }
-    public render() {
-        return <NavView onLogined={this.onLogined} />
-    }
+  let onLogined = async () => {
+    await start(CCustomerServiceApp, appConfig);
+  }
+
+    return <NavView onLogined={onLogined} />;
+
+  /*
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.tsx</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+  */
 }
 
 export default App;
