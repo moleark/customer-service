@@ -12,13 +12,13 @@ export class CWebUser extends CUqBase {
     webUserContact: any;
 
     protected async internalStart() {
-        this.pendingUsers = await this.uqs.webuser.PendingAuditWebUser.table(undefined);
+        this.pendingUsers = await this.uqs.webuser.getPendingAuditUser.table(undefined);
     }
 
     tab = () => this.renderView(VPendingAuditUserList);
 
     //async getPendingUsers() {
-        //this.pendingUsers = await this.uqs.webuser.PendingAuditWebUser.table(undefined);
+    //this.pendingUsers = await this.uqs.webuser.PendingAuditWebUser.table(undefined);
     //}
 
     async openPendingAuditUserDetail(user: any) {
@@ -55,7 +55,7 @@ export class CWebUser extends CUqBase {
         let { cOrder } = this.cApp;
         await cOrder.auditPendingOrder(id);
         // 刷新列表
-        this.pendingUsers = await this.uqs.webuser.PendingAuditWebUser.table(undefined);
+        this.pendingUsers = await this.uqs.webuser.getPendingAuditUser.table(undefined);
     }
 
     /**
@@ -75,7 +75,7 @@ export class CWebUser extends CUqBase {
     async auditPendingUserRefuse(reasonData: any) {
         let { reason, comments } = reasonData;
         await this.uqs.webuser.auditPendingUserRefuse.submit({ id: this.currentAuditingUser.id, reason: reason, comments: comments });
-        this.pendingUsers = await this.uqs.webuser.PendingAuditWebUser.table(undefined);
+        this.pendingUsers = await this.uqs.webuser.getPendingAuditUser.table(undefined);
     }
 
     /**

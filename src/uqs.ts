@@ -42,7 +42,7 @@ export interface UqWebUser {
     WebUserSetting: Map;
     WebUserCustomer: Map;
     WebUserContacts: Map;
-    PendingAuditWebUser: Book;
+    getPendingAuditUser: Query;
     auditPendingUser: Action;
     AuditPendingUserRefuseReason: Tuid;
     auditPendingUserRefuse: Action;

@@ -1,16 +1,21 @@
-import * as React from 'react';
+import _ from 'lodash';
+import { CUqBase } from '../CBase';
 import { VMe } from './VMe';
-import { CUqBase } from 'CBase';
 
 export class CMe extends CUqBase {
-
-    async internalStart(param?: any) {
+    protected async internalStart() {
 
     }
 
-    private renderMe = () => {
-        return this.renderView(VMe);
+    async changeWebUser(webUser: any) {
+        let { currentUser } = this.cApp;
+        await currentUser.changeWebUser(webUser);
     }
 
-    tab = () => <this.renderMe />
+    async changeWebUserContact(webUserContact: any) {
+        let { currentUser } = this.cApp;
+        await currentUser.changeWebUserContact(webUserContact);
+    }
+
+    tab = () => this.renderView(VMe);
 }
