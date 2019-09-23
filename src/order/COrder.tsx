@@ -22,6 +22,17 @@ export class COrder extends CUqBase {
         }
     }
 
+    /*
+    async cancelPendingOrder(webUserId: bigint) {
+        let pendingAuditOrders = await this.uqs.order.GetPendingAuditOrders.table({ webUser: webUserId });
+        for (let i = 0; i < pendingAuditOrders.length; i++) {
+            let order = pendingAuditOrders[i];
+            let { id, flow, state } = order;
+            await this.uqs.order.Order.action(id, flow, state, "Cancel");
+        }
+    }
+    */
+
     openOrderDetail = async (orderId: number) => {
 
         let order = await this.uqs.order.Order.getSheet(orderId);

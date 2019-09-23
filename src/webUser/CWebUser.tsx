@@ -70,11 +70,16 @@ export class CWebUser extends CUqBase {
 
     /**
      * 审核不通过操作
-     * @param webUserId
+     * @param reasonData
      */
     async auditPendingUserRefuse(reasonData: any) {
         let { reason, comments } = reasonData;
-        await this.uqs.webuser.auditPendingUserRefuse.submit({ id: this.currentAuditingUser.id, reason: reason, comments: comments });
+        let { id: currentAuditingUserId } = this.currentAuditingUser;
+        await this.uqs.webuser.auditPendingUserRefuse.submit({ id: currentAuditingUserId, reason: reason, comments: comments });
+        /*
+        let { cOrder } = this.cApp;
+        await cOrder.cancelPendingOrder(currentAuditingUserId);
+        */
         this.pendingUsers = await this.uqs.webuser.getPendingAuditUser.table(undefined);
     }
 

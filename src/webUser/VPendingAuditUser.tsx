@@ -3,6 +3,7 @@ import { VPage, Page, Form, Schema, UiSchema, UiInputItem, UiButton, Context, FA
 import { CWebUser } from './CWebUser';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
+import GLOABLE from 'ui';
 
 const schema: Schema = [
     { name: 'id', type: 'id', required: false },
@@ -33,8 +34,7 @@ export class VPendingAuditUser extends VPage<CWebUser> {
     private form: Form;
     private data: any = {};
     private pendingOrderList: JSX.Element;
-    @observable displayTip: boolean = false;
-    private tip: string;
+    @observable tips: JSX.Element;
 
     async open(param?: any) {
         let { currentAuditingUser } = this.controller;
@@ -53,24 +53,44 @@ export class VPendingAuditUser extends VPage<CWebUser> {
         // 为了在界面更新后仍显示填写的内容，需要将结果保存起来
         this.data.customer = customer;
         this.data.teacher = teacher;
-        this.displayTip = false;
 
         let ret = await this.controller.auditPendingUser(data);
         switch (ret) {
             case 1:
-                this.tip = "审核失败，必须填写客户CID!";
+                this.tips = <div className="alert alert-danger" role="alert">
+                    <FA name="exclamation-circle" className="exclamation-circle mr-2"></FA>审核失败，必须填写客户CID!
+                </div>
                 break;
             case 2:
-                this.tip = "审核失败，你填写的客户CID不存在!";
+                this.tips = <div className="alert alert-danger" role="alert">
+                    <FA name="exclamation-circle" className="exclamation-circle mr-2"></FA>审核失败，你填写的客户CID不存在!
+                </div>
                 break;
             case 4:
-                this.tip = "审核失败，你填写的老师CID不存在!";
+                this.tips = <div className="alert alert-danger" role="alert">
+                    <FA name="exclamation-circle" className="exclamation-circle mr-2"></FA>审核失败，你填写的老师CID不存在!
+                </div>
                 break;
             default:
-                this.tip = "审核成功!";
+                let leftseconds = 3;
+                this.tips = <div className="alert alert-success" role="alert">
+                    <FA name="check-circle" className="check-circle mr-2"></FA>审核成功{leftseconds}
+                </div>
+                let h = setInterval(() => {
+                    leftseconds--;
+                    this.tips = <div className="alert alert-success" role="alert">
+                        <FA name="check-circle" className="check-circle mr-2"></FA>审核成功{leftseconds}
+                    </div>
+                }, 1000);
+                setTimeout(() => {
+                    clearInterval(h);
+                    this.backPage();
+                }, 3000);
                 break;
         }
-        this.displayTip = true;
+        setTimeout(() => {
+            this.tips = undefined;
+        }, GLOABLE.TIPDISPLAYTIME);
     }
 
     private page = observer(() => {
@@ -89,10 +109,6 @@ export class VPendingAuditUser extends VPage<CWebUser> {
                 <div className="col-4 text-muted">Email:</div>
                 <div className="col-8"><a href={`mailto:${email}`}>{email}</a></div>
             </>;
-        }
-        let tips = <></>;
-        if (this.displayTip) {
-            tips = <div className="text-danger"><FA name="exclamation-circle" className="exclamation-circle"></FA> {this.tip}</div>
         }
 
         this.data.id = id;
@@ -116,19 +132,19 @@ export class VPendingAuditUser extends VPage<CWebUser> {
                 <div className="col-4 text-muted">部门:</div>
                 <div className="col-8">{departmentName}</div>
             </div>
-            <div className="bg-white p-3 mt-1">
-                <div>审核</div>
-                {tips}
+            <div className="card my-2 p-2">
+                <h5 className="card-title">审核</h5>
+                {this.tips}
+                <Form ref={v => this.form = v} schema={schema}
+                    uiSchema={uiSchema}
+                    formData={this.data}
+                    className="bg-white px-3"
+                    onButtonClick={this.onFormButtonClick}></Form>
             </div>
-            <Form ref={v => this.form = v} schema={schema}
-                uiSchema={uiSchema}
-                formData={this.data}
-                className="bg-white px-3 pb-3"
-                onButtonClick={this.onFormButtonClick}></Form>
-            <div className="bg-white px-3 pt-3 mt-1">
-                未审核订单列表
+            <div className="card my-2 p-2">
+                <h5 className="card-title">未审核订单列表</h5>
+                {this.pendingOrderList}
             </div>
-            {this.pendingOrderList}
         </Page>
     });
 }
