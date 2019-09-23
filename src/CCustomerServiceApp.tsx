@@ -6,6 +6,8 @@ import { UQs } from 'uqs';
 import { VMain } from 'VMain';
 import { CUqBase } from 'CBase';
 import { CProduct } from 'product/CProduct';
+import { WebUser } from 'currentUser';
+import GLOABLE from 'ui';
 
 export class CCustomerServiceApp extends CAppBase {
     get uqs(): UQs { return this._uqs as UQs; }
@@ -14,6 +16,7 @@ export class CCustomerServiceApp extends CAppBase {
 
     currentSalesRegion: any;
     currentLanguage: any;
+    currentUser: WebUser;
 
     cWebUser: CWebUser;
     cProduct: CProduct;
@@ -26,9 +29,10 @@ export class CCustomerServiceApp extends CAppBase {
 
     protected async internalStart() {
 
-        this.currentSalesRegion = await this.uqs.common.SalesRegion.load(1);
-
-        this.currentLanguage = await this.uqs.common.Language.load(197);
+        this.currentSalesRegion = await this.uqs.common.SalesRegion.load(GLOABLE.SALESREGION_CN);
+        this.currentLanguage = await this.uqs.common.Language.load(GLOABLE.CHINESE);
+        this.currentUser = new WebUser(this.uqs);
+        this.currentUser.setUser(this.user);
 
         this.cWebUser = this.newC(CWebUser);
         this.cProduct = this.newC(CProduct);

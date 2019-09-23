@@ -90,7 +90,9 @@ export class VMe extends VPage<CMe> {
             ]
             rows.push(...aboutRows, ...logOutRows);
         }
-        return <PropGrid rows={[]} values={{}} />;
+        return <Page header="我的">
+            <PropGrid rows={[...rows]} values={{}} />;
+        </Page>
     }
 }
 
