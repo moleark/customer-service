@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { tv, View } from 'tonva';
+import { View } from 'tonva';
 import { CProduct, productPropItem } from './CProduct';
 import { observer } from 'mobx-react';
 
@@ -18,7 +18,7 @@ export class VChemicalInfo extends View<CProduct> {
         let { chemicalInfoContainer } = this.controller;
         let chemicalInfo = chemicalInfoContainer[productId];
         if (chemicalInfo !== undefined) {
-            let { chemical, purity, CAS, molecularFomula, molecularWeight } = chemicalInfo;
+            let { purity, CAS } = chemicalInfo;
             return <>
                 {productPropItem('CAS', CAS)}
                 {productPropItem('纯度', purity)}

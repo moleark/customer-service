@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { nav, User, Page, Image, VPage } from 'tonva';
-import { Prop, Media, IconText, FA, PropGrid, LMR } from 'tonva';
+import { nav, Page, Image, VPage } from 'tonva';
+import { Prop, IconText, FA, PropGrid, LMR } from 'tonva';
 import { observer } from 'mobx-react';
 import { EditMeInfo } from './EditMeInfo';
 import { CMe } from './CMe';

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { CUqBase } from '../CBase';
 import { VMe } from './VMe';
 

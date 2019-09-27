@@ -22,7 +22,7 @@ export class VPendingAuditUserList extends VPage<CWebUser> {
         </LMR>
     }
 
-    private onUserClick = async (user: any) => {
+    private showUserDetail = async (user: any) => {
         await this.controller.openPendingAuditUserDetail(user);
     }
 
@@ -30,7 +30,7 @@ export class VPendingAuditUserList extends VPage<CWebUser> {
 
         let { pendingUsers } = this.controller;
         return <Page header="待审核客户">
-            <List items={pendingUsers} item={{ render: this.renderPendingUser, onClick: this.onUserClick }} />
+            <List items={pendingUsers} item={{ render: this.renderPendingUser, onClick: this.showUserDetail }} />
         </Page>
     })
 }

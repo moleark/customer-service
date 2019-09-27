@@ -1,7 +1,6 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import { observable } from 'mobx';
-import { Query, tv, BoxId, Map } from 'tonva';
+import { tv, BoxId } from 'tonva';
 import classNames from 'classnames';
 import { CUqBase } from '../CBase';
 import { ProductImage } from '../tools/productImage';

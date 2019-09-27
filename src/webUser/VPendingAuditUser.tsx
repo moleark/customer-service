@@ -3,7 +3,7 @@ import { VPage, Page, Form, Schema, UiSchema, UiInputItem, UiButton, Context, FA
 import { CWebUser } from './CWebUser';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import GLOABLE from 'ui';
+import GLOABLE from 'configuration';
 
 const schema: Schema = [
     { name: 'id', type: 'id', required: false },

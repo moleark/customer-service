@@ -86,7 +86,7 @@ export class EditMeInfo extends VPage<CMe>{
     }
 
     private page = () => {
-        let { schema, uiSchema, data, onItemChanged, webUserData, onWebUserChanged, webUserContactData, onWebUserContactChanged, controller } = this;
+        let { schema, uiSchema, data, onItemChanged } = this;
         return <Page header="个人信息">
             <Edit schema={schema} uiSchema={uiSchema}
                 data={data}

@@ -43,15 +43,7 @@ function item(caption: string, value: any) {
     </>;
 }
 
-const tvProductCategory = (values: any) => {
-    let { children } = values;
-    return <>
-        aaa
-    </>
-};
-
 export const product = {
     productx: tvProduct,
-    packx: tvPackx,
-    productCategory: tvProductCategory,
+    packx: tvPackx
 }

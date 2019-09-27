@@ -11,7 +11,7 @@ export class VCartProuductView extends View<CProduct> {
 
 
     private renderCartProduct = (product: any) => {
-        let { id, brand, description, descriptionC, origin, imageUrl } = product;
+        let { brand, description, descriptionC, origin, imageUrl } = product;
 
         return <div className="row d-flex mb-3 px-2">
             <div className="col-12">

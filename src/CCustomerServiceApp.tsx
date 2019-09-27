@@ -7,7 +7,7 @@ import { VMain } from 'VMain';
 import { CUqBase } from 'CBase';
 import { CProduct } from 'product/CProduct';
 import { WebUser } from 'currentUser';
-import GLOABLE from 'ui';
+import GLOABLE from 'configuration';
 
 export class CCustomerServiceApp extends CAppBase {
     get uqs(): UQs { return this._uqs as UQs; }

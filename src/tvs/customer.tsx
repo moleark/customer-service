@@ -14,7 +14,7 @@ export const tvContact = (values: any) => {
 }
 
 export const tvInvoiceType = (values: any) => {
-    let { id, description } = values;
+    let { description } = values;
     return <div className="flex-grow-1">
         {description}
     </div>

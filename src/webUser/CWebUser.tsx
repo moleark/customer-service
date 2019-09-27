@@ -34,22 +34,23 @@ export class CWebUser extends CUqBase {
      * @param data ：包含审核通过之后的内部cid
      */
     async auditPendingUser(data: any) {
-        let { id, customer: customerNo, teacher: teacherNo } = data;
+        let { id, customer: customerNo } = data;
         if (!customerNo)
             return 1;
         let customerBox = await this.uqs.customer.getCustomerByNo.obj({ customerNo: customerNo });
         if (!customerBox)
             return 2;
-
         let { id: customerId } = customerBox.customer;
-        /*eslint no-unused-vars: 0*/
-        let teacherId;
+
+        /*
+        let teacherId = undefined;
         if (teacherNo) {
             let teacherBox = await this.uqs.customer.getCustomerByNo.obj({ customerNo: teacherNo });
             if (!teacherBox)
                 return 4;
             teacherId = teacherBox.customer.id;
         }
+        */
 
         await this.uqs.webuser.auditPendingUser.submit({ id: id, customerId: customerId });
         let { cOrder } = this.cApp;
