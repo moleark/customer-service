@@ -8,17 +8,19 @@ export class COrder extends CUqBase {
     async internalStart(param: any) {
     }
 
-    async renderPendingOrder(webUserId: bigint) {
-        let pendingAuditOrders = await this.uqs.order.GetPendingAuditOrders.table({ webUser: webUserId });
+    async renderPendingOrder(webUserId: number) {
+        // let pendingAuditOrders = await this.uqs.order.GetPendingAuditOrders.table({ webUser: webUserId });
+        let pendingAuditOrders = await this.uqs.order.Order.userSheets("matching", webUserId, 0, 100);
         return this.renderView(VPendingOrderList, pendingAuditOrders);
     }
 
-    async auditPendingOrder(webUserId: bigint) {
-        let pendingAuditOrders = await this.uqs.order.GetPendingAuditOrders.table({ webUser: webUserId });
+    async auditPendingOrder(webUserId: number) {
+        // let pendingAuditOrders = await this.uqs.order.GetPendingAuditOrders.table({ webUser: webUserId });
+        let pendingAuditOrders = await this.uqs.order.Order.userSheets("matching", webUserId, 0, 100);
         for (let i = 0; i < pendingAuditOrders.length; i++) {
             let order = pendingAuditOrders[i];
-            let { id, flow, state } = order;
-            await this.uqs.order.Order.action(id, flow, state, "Pass");
+            let { id, flow } = order;
+            await this.uqs.order.Order.action(id, flow, 'matching', "Pass");
         }
     }
 
