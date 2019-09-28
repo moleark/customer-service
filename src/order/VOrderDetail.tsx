@@ -61,7 +61,7 @@ export class VOrderDetail extends VPage<COrder> {
                 </div>
             }
             couponUI = <div className="bg-white row no-gutters p-3 my-1">
-                <div className="col-3 text-muted">优惠码:</div>
+                <div className="col-3 text-muted">优惠券:</div>
                 <div className="col-9">
                     {offsetUI}
                     {remittedUI}
