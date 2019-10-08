@@ -30,7 +30,7 @@ export class VPendingAuditUserList extends VPage<CWebUser> {
 
         let { pendingUsers } = this.controller;
         return <Page header="待审核客户">
-            <List items={pendingUsers} item={{ render: this.renderPendingUser, onClick: this.showUserDetail }} />
+            <List items={pendingUsers} none="暂无待审核客户" item={{ render: this.renderPendingUser, onClick: this.showUserDetail }} />
         </Page>
     })
 }
