@@ -7,20 +7,19 @@ export const appConfig: AppConfig = {
     tvs: tvs,
 };
 
-const GLOABLE = {
+const GLOABLE_PRODUCTION = {
     CHINA: 44,
     CHINESE: 196,
     SALESREGION_CN: 1,
     TIPDISPLAYTIME: 3000,
 }
 
-/*
-const GLOABLE = {
+const GLOABLE_TEST = {
     CHINA: 43,
     CHINESE: 197,
     SALESREGION_CN: 4,
     TIPDISPLAYTIME: 3000,
 }
-*/
 
-export default GLOABLE;
+export { GLOABLE_PRODUCTION as GLOABLE };
+// export { GLOABLE_TEST as GLOABLE };
