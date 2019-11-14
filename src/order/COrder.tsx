@@ -14,13 +14,16 @@ export class COrder extends CUqBase {
         return this.renderView(VPendingOrderList, pendingAuditOrders);
     }
 
-    async auditPendingOrder(webUserId: number) {
+    async auditPendingOrder(webUserId: number, buyAccount: BoxId) {
+        let { Order: OrderSheet, OrderBuyerAccount } = this.uqs.order;
         // let pendingAuditOrders = await this.uqs.order.GetPendingAuditOrders.table({ webUser: webUserId });
-        let pendingAuditOrders = await this.uqs.order.Order.userSheets("matching", webUserId, 0, 100);
+        let pendingAuditOrders = await OrderSheet.userSheets("matching", webUserId, 0, 100);
         for (let i = 0; i < pendingAuditOrders.length; i++) {
             let order = pendingAuditOrders[i];
             let { id, flow } = order;
-            await this.uqs.order.Order.action(id, flow, 'matching', "Pass");
+            // 建立map
+            await OrderBuyerAccount.add({ order: order, arr1: [{ buyerAccount: buyAccount }] })
+            await OrderSheet.action(id, flow, 'matching', "Pass");
         }
     }
 

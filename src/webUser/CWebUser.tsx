@@ -34,29 +34,48 @@ export class CWebUser extends CUqBase {
      * @param data ：包含审核通过之后的内部cid
      */
     async auditPendingUser(data: any) {
-        let { id, customer: customerNo } = data;
+
+        let { customer: uqCustomer, webuser: uqWebUser } = this.uqs;
+        let { getCustomerByNo, getBuyerAccountByNo, getCustomerOrganization, BuyerAccount: BuyerAccountTuid } = uqCustomer;
+
+        let { id, customer: customerNo, teacher: teacherNo } = data;
         if (!customerNo)
             return 1;
-        let customerBox = await this.uqs.customer.getCustomerByNo.obj({ customerNo: customerNo });
-        if (!customerBox)
+        let customerResult = await getCustomerByNo.obj({ customerNo: customerNo.trim() });
+        if (!customerResult)
             return 2;
-        let { id: customerId } = customerBox.customer;
+        let { customer } = customerResult;
 
-        /*
-        let teacherId = undefined;
+        let buyerAccount = customer;
         if (teacherNo) {
-            let teacherBox = await this.uqs.customer.getCustomerByNo.obj({ customerNo: teacherNo });
+            // step1:确保输入的Teacher的CID存在
+            let teacherBox = await getCustomerByNo.obj({ customerNo: teacherNo.trim() });
             if (!teacherBox)
                 return 4;
-            teacherId = teacherBox.customer.id;
-        }
-        */
 
-        await this.uqs.webuser.auditPendingUser.submit({ id: id, customerId: customerId });
+            let teacherBuyerAccount = await getBuyerAccountByNo.obj({ buyerAccountNo: teacherNo });
+            if (!teacherBuyerAccount) {
+                // 用内部CID的信息新建BuyerAccount
+                let { customer: buyerAccountInner } = teacherBox;
+                let { id, name, firstName, lastName, xyz, createTime } = buyerAccountInner;
+                let organizationBox = await getCustomerOrganization.obj({ customerId: id });
+                teacherBuyerAccount = await BuyerAccountTuid.save(undefined,
+                    {
+                        "organization": organizationBox && organizationBox.organization,
+                        "description": name, "xyz": xyz, "no": teacherNo, "createTime": createTime, "isValid": 1
+                    });
+                // 设置buyerAccount为老师的账号
+                buyerAccount = teacherBuyerAccount;
+            }
+        }
+        let { WebUserBuyerAccount, auditPendingUser, getPendingAuditUser } = uqWebUser;
+        // 创建WebUser和BuyerAccount的关联
+        await WebUserBuyerAccount.add({ webUser: id, arr1: [{ buyerAccount: buyerAccount }] });
+        await auditPendingUser.submit({ id: id, customerId: customer });
         let { cOrder } = this.cApp;
-        await cOrder.auditPendingOrder(id);
+        await cOrder.auditPendingOrder(id, buyerAccount);
         // 刷新列表
-        this.pendingUsers = await this.uqs.webuser.getPendingAuditUser.table(undefined);
+        this.pendingUsers = await getPendingAuditUser.table(undefined);
     }
 
     /**

@@ -10,6 +10,8 @@ export interface UqOrder {
     GetPendingAuditOrders: Query
     GetCart: Query;
     GetPendingPayment: Query;
+
+    OrderBuyerAccount: Map;
 }
 
 export interface UqProduct {
@@ -46,6 +48,8 @@ export interface UqWebUser {
     auditPendingUser: Action;
     AuditPendingUserRefuseReason: Tuid;
     auditPendingUserRefuse: Action;
+
+    WebUserBuyerAccount: Map;
 }
 
 export interface UqCustomer {
@@ -54,6 +58,10 @@ export interface UqCustomer {
     CustomerContacts: Map;
     CustomerSetting: Map;
     getCustomerByNo: Query;
+    getCustomerOrganization: Query;
+
+    BuyerAccount: Tuid;
+    getBuyerAccountByNo: Query;
 }
 
 export interface UqCustomerDiscount {
