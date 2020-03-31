@@ -50,6 +50,8 @@ export interface UqWebUser {
     auditPendingUserRefuse: Action;
 
     WebUserBuyerAccount: Map;
+    SearchHavingAuditUser: Query;
+    SearchHavingRefuseUser: Query;
 }
 
 export interface UqCustomer {

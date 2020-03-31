@@ -15,7 +15,7 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.1",
-    "tonva": "^1.1.88"
+    "tonva": "^1.2.44"
   },
   "devDependencies": {
     "@types/jest": "24.0.18",

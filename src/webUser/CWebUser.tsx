@@ -64,7 +64,7 @@ export class CWebUser extends CUqBase {
         let buyerAccount = await getBuyerAccountByNo.obj({ buyerAccountNo: buyerAccountNo });
         if (!buyerAccount) {
             // 用内部CID的信息新建BuyerAccount
-            let { id, name, firstName, lastName, xyz } = buyerAccountInner.obj;
+            let { id, name, xyz } = buyerAccountInner.obj;
             let organizationBox = await getCustomerOrganization.obj({ customerId: id });
             buyerAccount = await BuyerAccountTuid.save(undefined,
                 {
