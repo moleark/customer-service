@@ -38,25 +38,8 @@ export class VMe extends VPage<CMe> {
     });
 
     render() {
-        let { showHavingAudit, showHavingRefuse } = this.controller;
         const { user } = nav;
         let aboutRows: Prop[] = [
-            '',
-            {
-                type: 'component',
-                component: <div className="w-100 d-flex justify-content-between" onClick={showHavingRefuse}>
-                    <IconText iconClass="text-info mr-2" icon="smile-o" text="已驳回" />
-                    <div className="py-2 small"></div>
-                </div>,
-            },
-            '',
-            {
-                type: 'component',
-                component: <div className="w-100 d-flex justify-content-between" onClick={showHavingAudit}>
-                    <IconText iconClass="text-info mr-2" icon="smile-o" text="已审批" />
-                    <div className="py-2 small"></div>
-                </div>,
-            },
             '',
             {
                 type: 'component',

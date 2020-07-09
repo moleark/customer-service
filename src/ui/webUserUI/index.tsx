@@ -1,3 +1,4 @@
+/*
 import * as React from 'react';
 import { TuidUI, UqUI } from 'tonva';
 
@@ -18,3 +19,5 @@ const uqUI: UqUI = {
 }
 
 export default uqUI;
+*/
+export const webUserUI = 1;

@@ -3,10 +3,15 @@ import { observable } from 'mobx';
 import { VPendingAuditUser } from './VPendingAuditUser';
 import { VPendingAuditUserRefuse } from './VPendingAuditUserRefuse';
 import { CUqBase } from 'CBase';
+import { QueryPager } from 'tonva';
+import { VPassedWebUsers } from './VPassedWebUsers';
+import { VRefusedWebUsers } from './VRefusedWebUsers';
 
 export class CWebUser extends CUqBase {
 
     @observable pendingUsers: any[];
+    @observable passedWebUsersPager: QueryPager<any>;
+    @observable refusedWebUsersPager: QueryPager<any>;
 
     currentAuditingUser: any;
     webUserContact: any;
@@ -84,13 +89,28 @@ export class CWebUser extends CUqBase {
     }
 
     /**
+     * 
+     */
+    searchPassedWebUsers = async () => {
+        this.passedWebUsersPager = new QueryPager(this.uqs.webuser.SearchHavingAuditUser, 15, 30);
+        this.passedWebUsersPager.first({});
+    }
+
+    /**
+     * 
+     */
+    showPassedWebUsers = async () => {
+        await this.searchPassedWebUsers();
+        this.openVPage(VPassedWebUsers);
+    }
+
+    /**
      * 打开审核不通过界面
      */
     openAuditRefuse = async () => {
 
         let reasons = await this.uqs.webuser.AuditPendingUserRefuseReason.search(undefined, 0, 100);
         this.openVPage(VPendingAuditUserRefuse, reasons);
-        //await this.controller.auditPendingUserRefuse(this.data.id);
     }
 
     /**
@@ -109,9 +129,25 @@ export class CWebUser extends CUqBase {
     }
 
     /**
+     * 
+     */
+    searchRefusedWebUsers = async () => {
+        this.refusedWebUsersPager = new QueryPager(this.uqs.webuser.SearchHavingRefuseUser, 15, 30);
+        this.refusedWebUsersPager.first({});
+    }
+
+    /**
+     * 显示审核不通过的客户信息 
+     */
+    showRefusedWebUsers = async () => {
+        await this.searchRefusedWebUsers();
+        this.openVPage(VRefusedWebUsers);
+    }
+
+    /**
      * 显示待审核客户的未审核订单
      */
-    renderPendingOrders = async (webUserId: bigint) => {
+    renderPendingOrders = async (webUserId: number) => {
         let { cOrder } = this.cApp;
         return await cOrder.renderPendingOrder(webUserId);
     }

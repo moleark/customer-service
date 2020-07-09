@@ -1,3 +1,4 @@
+/*
 import { UqUI } from 'tonva';
 import tuid from './tuid';
 
@@ -6,3 +7,5 @@ const uqUI: UqUI = {
 }
 
 export default uqUI;
+*/
+export const customer = 1;

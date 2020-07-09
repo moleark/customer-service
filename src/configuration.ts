@@ -1,4 +1,4 @@
-import { AppConfig } from 'tonva';
+import { AppConfig, env } from 'tonva';
 import { tvs } from 'tvs';
 import { jnkTop } from 'ui/jnkTop';
 /* eslint-disable */
@@ -24,5 +24,6 @@ const GLOABLE_TEST = {
     TIPDISPLAYTIME: 3000,
 }
 
-export { GLOABLE_PRODUCTION as GLOABLE };
+export const GLOABLE = env.testing === true ? GLOABLE_TEST : GLOABLE_PRODUCTION;
+// export { GLOABLE_PRODUCTION as GLOABLE };
 // export { GLOABLE_TEST as GLOABLE };
