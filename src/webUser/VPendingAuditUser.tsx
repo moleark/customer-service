@@ -115,7 +115,7 @@ export class VPendingAuditUser extends VPage<CWebUser> {
         let footer = <LMR
             right={<button type="button"
                 className="btn btn-primary m-1"
-                onClick={this.auditPendingUser}>通过</button>}
+                onClick={this.auditPendingUser}>通&nbsp; 过</button>}
             left={
                 <button type="button"
                     className="btn btn-outline-primary m-1"

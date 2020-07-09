@@ -9,7 +9,6 @@ const App: React.FC = () => {
 
     let onLogined = async () => {
         await start(CCustomerServiceApp, appConfig);
-
     }
 
     return <NavView onLogined={onLogined} />;

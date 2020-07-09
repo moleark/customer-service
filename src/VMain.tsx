@@ -22,8 +22,7 @@ export class VMain extends VPage<CCustomerServiceApp> {
                 notify: notify,
             }
         });
-        return <Page header={false}>
-            <Tabs tabs={faceTabs} />
-        </Page>;
+        return <Page header={false} tabsProps={{ tabs: faceTabs }}>
+        </Page >;
     }
 }
