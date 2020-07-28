@@ -8,6 +8,7 @@ import { CUqBase, CUqApp } from 'CBase';
 import { CProduct } from 'product/CProduct';
 import { WebUser } from 'currentUser';
 import { GLOABLE } from 'configuration';
+import { CPointShoop } from 'pointShoop/CPointShoop';
 
 export class CCustomerServiceApp extends CUqApp {
     // get uqs(): UQs { return this._uqs; }
@@ -22,6 +23,7 @@ export class CCustomerServiceApp extends CUqApp {
     cProduct: CProduct;
     cMe: CMe;
     cOrder: COrder;
+    cPointShoop: CPointShoop;
 
     protected async internalStart() {
 
@@ -41,6 +43,7 @@ export class CCustomerServiceApp extends CUqApp {
         this.cProduct = this.newC(CProduct);
         this.cMe = this.newC(CMe);
         this.cOrder = this.newC(COrder);
+        this.cPointShoop = this.newC(CPointShoop);
 
         this.topKey = nav.topKey();
         this.showMain();

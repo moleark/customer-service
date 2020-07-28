@@ -87,6 +87,10 @@ export interface UqMember {
     MemberRecommender: Map;
 }
 
+export interface UqPointShop {
+    PointExchangeSheet: Sheet;
+}
+
 export interface UQs {
     order: UqOrder;
     product: UqProduct;
@@ -98,4 +102,5 @@ export interface UQs {
     warehouse: UqWarehouse;
     salesTask: UqSalesTask;
     member: UqMember;
+    积分商城: UqPointShop;
 }

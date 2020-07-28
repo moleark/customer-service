@@ -34,11 +34,13 @@ export class VPendingAuditUser extends VPage<CWebUser> {
     private form: Form;
     private data: any = {};
     private pendingOrderList: JSX.Element;
+    private pendingExchangeOrderList: JSX.Element;
     @observable tips: JSX.Element;
 
     async open(param?: any) {
-        let { currentAuditingUser } = this.controller;
+        let { currentAuditingUser, renderPendingExchangeOrders } = this.controller;
         this.pendingOrderList = await this.controller.renderPendingOrders(currentAuditingUser.id);
+        this.pendingExchangeOrderList = await renderPendingExchangeOrders(currentAuditingUser.id);
         this.openPage(this.page, param);
     }
 
@@ -144,6 +146,10 @@ export class VPendingAuditUser extends VPage<CWebUser> {
             <div className="card my-2 p-2">
                 <h5 className="card-title">未审核订单列表</h5>
                 {this.pendingOrderList}
+            </div>
+            <div className="card my-2 p-2">
+                <h5 className="card-title">未审核兑换单列表</h5>
+                {this.pendingExchangeOrderList}
             </div>
         </Page>
     });

@@ -82,8 +82,9 @@ export class CWebUser extends CUqBase {
         // 创建WebUser和BuyerAccount的关联
         await WebUserBuyerAccount.add({ webUser: id, arr1: [{ buyerAccount: buyerAccount }] });
         await auditPendingUser.submit({ id: id, customerId: customer });
-        let { cOrder } = this.cApp;
+        let { cOrder, cPointShoop } = this.cApp;
         await cOrder.auditPendingOrder(id, buyerAccount);
+        await cPointShoop.auditPendingExchangeOrder(id);
         // 刷新列表
         this.pendingUsers = await getPendingAuditUser.table(undefined);
     }
@@ -150,5 +151,9 @@ export class CWebUser extends CUqBase {
     renderPendingOrders = async (webUserId: number) => {
         let { cOrder } = this.cApp;
         return await cOrder.renderPendingOrder(webUserId);
+    }
+    renderPendingExchangeOrders = async (webUserId: number) => {
+        let { cPointShoop } = this.cApp;
+        return await cPointShoop.renderPendingExchangeOrders(webUserId);
     }
 }
