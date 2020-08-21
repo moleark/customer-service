@@ -38,8 +38,8 @@ export class VPendingAuditUser extends VPage<CWebUser> {
     @observable tips: JSX.Element;
 
     async open(param?: any) {
-        let { currentAuditingUser, renderPendingExchangeOrders } = this.controller;
-        this.pendingOrderList = await this.controller.renderPendingOrders(currentAuditingUser.id);
+        let { currentAuditingUser, renderPendingOrders, renderPendingExchangeOrders } = this.controller;
+        this.pendingOrderList = await renderPendingOrders(currentAuditingUser.id);
         this.pendingExchangeOrderList = await renderPendingExchangeOrders(currentAuditingUser.id);
         this.openPage(this.page, param);
     }
