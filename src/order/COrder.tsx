@@ -42,8 +42,8 @@ export class COrder extends CUqBase {
 
         let order = await this.uqs.order.Order.getSheet(orderId);
         let { data } = order;
-        let { orderitems } = data;
-        let orderItemsGrouped = orderItemGroupByProduct(orderitems);
+        let { orderItems } = data;
+        let orderItemsGrouped = orderItemGroupByProduct(orderItems);
         data.orderItems = orderItemsGrouped;
         this.openVPage(VOrderDetail, order);
     }
