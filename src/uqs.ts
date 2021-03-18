@@ -1,13 +1,10 @@
 import { Tuid, Map, Query, Action, Sheet, Book } from "tonva";
 
 export interface UqOrder {
-    //a: Tuid;
-    //b: Tuid;
     SetCart: Action;
     RemoveFromCart: Action;
     MergeCart: Action;
     Order: Sheet;
-    GetPendingAuditOrders: Query
     GetCart: Query;
     GetPendingPayment: Query;
 

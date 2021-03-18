@@ -9,14 +9,12 @@ export class COrder extends CUqBase {
     }
 
     async renderPendingOrder(webUserId: number) {
-        // let pendingAuditOrders = await this.uqs.order.GetPendingAuditOrders.table({ webUser: webUserId });
         let pendingAuditOrders = await this.uqs.order.Order.userSheets("matching", webUserId, 0, 100);
         return this.renderView(VPendingOrderList, pendingAuditOrders);
     }
 
     async auditPendingOrder(webUserId: number, buyAccount: BoxId) {
         let { Order: OrderSheet, OrderBuyerAccount } = this.uqs.order;
-        // let pendingAuditOrders = await this.uqs.order.GetPendingAuditOrders.table({ webUser: webUserId });
         let pendingAuditOrders = await OrderSheet.userSheets("matching", webUserId, 0, 100);
         for (let i = 0; i < pendingAuditOrders.length; i++) {
             let order = pendingAuditOrders[i];
@@ -26,17 +24,6 @@ export class COrder extends CUqBase {
             await OrderSheet.action(id, flow, 'matching', "Pass");
         }
     }
-
-    /*
-    async cancelPendingOrder(webUserId: bigint) {
-        let pendingAuditOrders = await this.uqs.order.GetPendingAuditOrders.table({ webUser: webUserId });
-        for (let i = 0; i < pendingAuditOrders.length; i++) {
-            let order = pendingAuditOrders[i];
-            let { id, flow, state } = order;
-            await this.uqs.order.Order.action(id, flow, state, "Cancel");
-        }
-    }
-    */
 
     openOrderDetail = async (orderId: number) => {
 
