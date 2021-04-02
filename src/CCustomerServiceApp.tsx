@@ -28,13 +28,7 @@ export class CCustomerServiceApp extends CUqApp {
     protected async internalStart() {
 
         let { uqs } = this;
-        let { common } = uqs;
-        let { SalesRegion, Language } = common;
-        let [currentSalesRegion, currentLanguage] = await Promise.all([
-            SalesRegion.load(GLOABLE.SALESREGION_CN),
-            Language.load(GLOABLE.CHINESE),
-        ]);
-        this.currentUser = new WebUser(this.uqs);
+        this.currentUser = new WebUser(uqs);
         if (this.isLogined) {
             this.currentUser.setUser(this.user);
         }

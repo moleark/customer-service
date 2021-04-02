@@ -28,9 +28,10 @@ export class CWebUser extends CUqBase {
 
     async openPendingAuditUserDetail(user: any) {
         let { webUser: webUserBox } = user;
-        let { id } = webUserBox;
-        this.currentAuditingUser = await this.uqs.webuser.WebUser.load(id);
-        this.webUserContact = await this.uqs.webuser.WebUserContact.obj({ webUser: id });
+        let { uqs } = this;
+        let { webuser } = uqs;
+        this.currentAuditingUser = await webuser.WebUser.load(webUserBox);
+        this.webUserContact = await webuser.WebUserContact.obj({ webUser: webUserBox });
         this.openVPage(VPendingAuditUser);
     }
 
@@ -78,10 +79,9 @@ export class CWebUser extends CUqBase {
                 });
         }
 
-        let { WebUserBuyerAccount, auditPendingUser, getPendingAuditUser } = uqWebUser;
-        // 创建WebUser和BuyerAccount的关联
-        await WebUserBuyerAccount.add({ webUser: id, arr1: [{ buyerAccount: buyerAccount }] });
-        await auditPendingUser.submit({ id: id, customerId: customer });
+        let { auditPendingUser, getPendingAuditUser } = uqWebUser;
+        await auditPendingUser.submit({ id: id, customerId: customer, buyerAccountId: buyerAccount });
+
         let { cOrder, cPointShoop } = this.cApp;
         await cOrder.auditPendingOrder(id, buyerAccount);
         await cPointShoop.auditPendingExchangeOrder(id);
