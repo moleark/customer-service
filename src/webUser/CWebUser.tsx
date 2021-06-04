@@ -67,7 +67,7 @@ export class CWebUser extends CUqBase {
         }
 
         /* 创建buyeraccount */
-        let buyerAccount = await getBuyerAccountByNo.obj({ buyAccountNo: buyerAccountNo });
+        let buyerAccount: any = await getBuyerAccountByNo.obj({ buyAccountNo: buyerAccountNo });
         if (!buyerAccount) {
             // 用内部CID的信息新建BuyerAccount
             let { id, name, xyz } = buyerAccountInner.obj;
@@ -79,6 +79,7 @@ export class CWebUser extends CUqBase {
                 });
         }
 
+        buyerAccount = typeof buyerAccount === "number" ? buyerAccount : buyerAccount.buyerAccount;
         let { auditPendingUser, getPendingAuditUser } = uqWebUser;
         await auditPendingUser.submit({ id: id, customerId: customer, buyerAccountId: buyerAccount });
 
